@@ -44,7 +44,7 @@ class Reminder extends Command
     //各予約の予約情報をDBより収集）
     foreach($to_send_order_no as $part_of_order){
         //「送信済み」かつ「住所未記入“ではない”」予約はスキップする
-        if($part_of_order->reminder_sent == 1 && $part_of_order->seminar_venue_pending == 0){
+        if($part_of_order->reminder_sent == 1 && $part_of_order->event_venue_pending == 0){
             continue;
         }else{
             //order_idに紐づく機材IDを抽出（あとでwhereInするので配列に）

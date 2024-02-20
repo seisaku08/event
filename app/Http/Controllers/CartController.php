@@ -23,7 +23,8 @@ class CartController extends Controller
             $data = [
                 'user' => Auth::user()->id,
                 'input' => $request,
-                'seminar_day' =>$request->session()->get('Session.SeminarDay'),
+                'arrive' => $request->session()->get('Session.Arrive'),
+                'useend' => $request->session()->get('Session.UseEnd'),
                 'from' => $request->session()->get('Session.UseFrom'),
                 'to' => $request->session()->get('Session.UseTo'),
                 
@@ -36,10 +37,11 @@ class CartController extends Controller
             'user' => Auth::user()->id,
             'input' => $request,
             'CartData' => MachineDetail::wherein('machine_id', $mid)->get(),
-            'seminar_day' =>$request->session()->get('Session.SeminarDay'),
+            'arrive' => $request->session()->get('Session.Arrive'),
+            'useend' => $request->session()->get('Session.UseEnd'),
             'from' => $request->session()->get('Session.UseFrom'),
             'to' => $request->session()->get('Session.UseTo'),
-            
+        
         ];
         return view('cart', $data);
     }
@@ -49,47 +51,45 @@ class CartController extends Controller
         //使用機材のIDを取得
         $id = $request->input('id');
 
-        $day1after = Common::dayafter(today(),1);
         $day4after = Common::dayafter(today(),4);
-        $daysemi3before = Common::daybefore(Carbon::parse($request->seminar_day),3);
-        $daysemi3after = Common::dayafter(Carbon::parse($request->seminar_day),3);
+        $day_after_from = Common::dayafter(Carbon::parse($request->from),1);
 
         $validator = Validator::make($request->all(),
         [
-            'seminar_day' => ['required_with_all:from,to', "after_or_equal:{$day4after}"],
-            'from' => ['required_with_all:seminar_day,to', "after_or_equal:{$day1after}", "before_or_equal:{$daysemi3before}"],
-            'to' => ['required_with_all:seminar_day,from', "after_or_equal:{$daysemi3after}"],
+            'from' => ['required_with_all:to', "after_or_equal:{$day4after}"],
+            'to' => ['required_with_all:from', "after_or_equal:{$day_after_from}"],
             'id' => 'required',
         ],
         [
-            'seminar_day.required_with_all' => 'セミナー開催日は入力必須です。',
-            'from.required_with_all' => '予約開始日は入力必須です。',
-            'to.required_with_all' => '予約終了日は入力必須（セミナー開催日の3営業日前（'.$daysemi3before->format('Y/m/d').'）まで入力可能）です。',
-            'seminar_day.after_or_equal' => 'セミナー開催日は本日の4営業日後（'.$day4after->format('Y/m/d').'）から入力可能です。',
-            'from.after_or_equal' => '予約開始日は翌営業日以降（'.$day1after->format('Y/m/d').'）から入力可能です。',
-            'from.before_or_equal' => '予約開始日はセミナー開催日の3営業日前（'.$daysemi3before->format('Y/m/d').'）まで入力可能です。',
-            'to.after_or_equal' => '予約終了日はセミナー開催日の3営業日後（'.$daysemi3after->format('Y/m/d').'）から入力可能です。',
+            'from.required_with_all' => '機材納品日は入力必須（3営業日後（'.$day4after->format('Y/m/d').'）から入力可能）です。',
+            'to.required_with_all' => '現場最終日は入力必須です。',
+            'from.after_or_equal' => '機材納品日は3営業日後（'.$day4after->format('Y/m/d').'）から入力可能です。',
+            'to.after' => '現場最終日は機材納品日の翌日以降（'.$day_after_from->format('Y/m/d').'）から入力可能です。',
             'id' => '機材は必ず一つ以上選択してください。',
         ]);
 
         if($validator->fails()){
             //セッションに機材ID、日程を登録
             $request->session()->put('Session.CartData', $id);
-            $request->session()->put('Session.SeminarDay', $request->seminar_day);
-            $request->session()->put('Session.UseFrom', $request->from);
-            $request->session()->put('Session.UseTo', $request->to);
+            $request->session()->put('Session.Arrive', $request->from);
+            $request->session()->put('Session.UseEnd', $request->to);
+            $request->session()->put('Session.UseFrom', Common::daybefore(Carbon::parse($request->from), 3)->format('Y-m-d'));
+            $request->session()->put('Session.UseTo', Common::dayafter(Carbon::parse($request->to), 3)->format('Y-m-d'));
 
             return redirect()->route('pctool.retry')->withErrors($validator);
         }
 
         //使用状況を確認
         //$uに検索日程を1日ずつ格納
-        $from = new Carbon($request->from);
-        $to = new Carbon($request->to);
+        $arrive = new Carbon($request->from);
+        $useend = new Carbon($request->to);
+        $from = Common::daybefore($arrive, 3);
+        $to = Common::dayafter($useend, 3);
         while($from <= $to){
             $u[] = $from->format('Y-m-d');
             $from->modify('1 day');
         }
+        // dd($arrive, $useend, $from, $to, $usageday, $u);
         $user = Auth::user()->id;
         //検索日程における既登録分を取得
         $usage = DayMachine::whereIn('day', $u)->pluck('machine_id')->toarray();
@@ -106,7 +106,8 @@ class CartController extends Controller
         else{
             //temporariesテーブルに選択した機材ID、日程を仮登録
             foreach($id as $i){
-                $from = new Carbon($request->from);
+                $arrive = new Carbon($request->from);
+                $from = Common::daybefore($arrive, 3);
                 while($from <= $to){
                     $temp = new Temporary;
                         $temp->user_id = $user;
@@ -118,9 +119,10 @@ class CartController extends Controller
             }
             //セッションに機材ID、日程を登録
             $request->session()->put('Session.CartData', $id);
-            $request->session()->put('Session.SeminarDay', $request->seminar_day);
-            $request->session()->put('Session.UseFrom', $request->from);
-            $request->session()->put('Session.UseTo', $request->to);
+            $request->session()->put('Session.Arrive', $request->from);
+            $request->session()->put('Session.UseEnd', $request->to);
+            $request->session()->put('Session.UseFrom', Common::daybefore(Carbon::parse($request->from), 3)->format('Y-m-d'));
+            $request->session()->put('Session.UseTo', Common::dayafter(Carbon::parse($request->to), 3)->format('Y-m-d'));
 
         }
         // dd($id,$u,$usage,$tempUse,array_merge($usage,$tempUse),$inUse,in_array($id, $inUse),$request->session());
@@ -145,7 +147,7 @@ class CartController extends Controller
             $request->session()->put('Session.CartData', $removed);
         }else{
             session()->forget('Session.CartData');
-            return view('cart_empty');
+            return view('cart.empty');
         }
         
         // dd($request, $sessionCartData, $removed, $request->session()->get('Session.CartData'));

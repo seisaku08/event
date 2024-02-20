@@ -13,7 +13,7 @@
     <p class="text-left">この度はご予約いただき誠にありがとうございます。<br>
         以下の内容で予約を承りました。</p>
         <h5 class="mt-3 mb-2">【キャンセル・変更について】</h5>
-<p class="text-left">キャンセルはセミナー開催日の3営業日前までに予約画面より変更をお願いいたします。<br>
+<p class="text-left">キャンセルは機材納品日の3営業日前までに予約画面より変更をお願いいたします。<br>
 ※ご不明な点がございましたら、下記までご連絡くださいますようお願いいたします。</p>
 
 <table id="form">
@@ -34,28 +34,24 @@
         <td class="w30">{{ $orderdata['user']['user_tel'] }}</td>
     </tr>
     <tr class="midashi">
-        <th colspan="4">セミナー情報</th>
+        <th colspan="4">イベント情報</th>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー名</label></td>
-        <td class="w50">{{ $orderdata['order']['seminar_name'] }}</td>
+        <td class="w25"><label>イベント名</label></td>
+        <td class="w50">{{ $orderdata['order']['event_name'] }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー開催日</label></td>
-        <td class="w25">{{ $orderdata['order']['seminar_day'] }}</td>
-    </tr>
-    <tr>
-        <td class="w25"><label>予約開始日:</label></td>
+        <td class="w25"><label>機材納品日:</label></td>
         <td class="w25">{{ $orderdata['order']['order_use_from'] }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>予約終了日:</label></td>
+        <td class="w25"><label>現場最終日:</label></td>
         <td class="w25">{{ $orderdata['order']['order_use_to'] }}</td>
     </tr>
 <tr class="midashi">
         <th colspan="4">配送先情報</th>
     </tr>
-    @if( $orderdata['order']['seminar_venue_pending'] == true )
+    @if( $orderdata['order']['event_venue_pending'] == true )
     <tr>
         <td class="w100 text-center"><label>後日入力</label></td>
     </tr>
@@ -132,7 +128,7 @@
 〒101-0047　
 東京都千代田区内神田1-7-5<br>
 TEL: 03-3292-1488<br>
-e-mail: <a href="support@daioh-pc.com">support@daioh-pc.com</a>
+e-mail: <a href="support@daioh-pcevent.com">support@daioh-pcevent.com</a>
   </body>
 </html>
 {{-- <?php dd($orderdata);?> --}}

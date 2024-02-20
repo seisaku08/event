@@ -22,29 +22,27 @@ class ConfirmController extends Controller
 
         $rules = [
                 //
-                'seminar_name' => 'required',
-                'venue_zip' => 'exclude_if:seminar_venue_pending,true|required',
-                'venue_addr1' => 'exclude_if:seminar_venue_pending,true|required',
-                'venue_name' => 'exclude_if:seminar_venue_pending,true|required',
-                'venue_tel' => 'exclude_if:seminar_venue_pending,true|required|digits_between:5,11',
-                'shipping_arrive_day' => 'exclude_if:seminar_venue_pending,true|required|before:seminar_day|after:order_use_from',
-                'shipping_return_day' => 'exclude_if:seminar_venue_pending,true|required|after_or_equal:seminar_day|before:order_use_to',
+                'event_name' => 'required',
+                'venue_zip' => 'exclude_if:event_venue_pending,true|required',
+                'venue_addr1' => 'exclude_if:event_venue_pending,true|required',
+                'venue_name' => 'exclude_if:event_venue_pending,true|required',
+                'venue_tel' => 'exclude_if:event_venue_pending,true|required|digits_between:5,11',
+                'shipping_arrive_day' => "exclude_if:event_venue_pending,true|required|after_or_equal:{$request->pend_arrive_day}",
+                'shipping_return_day' => 'exclude_if:event_venue_pending,true|required|after_or_equal:order_use_to',
                 'shipping_note' => 'max:200',
             ];
 
         $massages = [
-                'seminar_name.required' => 'セミナー名は必ず入力してください。',
+                'event_name.required' => 'イベント名は必ず入力してください。',
                 'venue_zip.required' => '郵便番号は必ず入力してください。',
                 'venue_addr1.required' => '住所は必ず入力してください。',
                 'venue_name.required' => '配送先担当者は必ず入力してください。',
                 'venue_tel.required' => '配送先電話番号は必ず入力してください。',
                 'venue_tel.digits_between' => '配送先電話番号は市外局番から入力してください。',
                 'shipping_arrive_day.required' => '到着希望日は必ず入力してください。',
-                'shipping_arrive_day.before' => '到着希望日はセミナー開催日より前の日付を入力してください。',
-                'shipping_arrive_day.after' => '到着希望日は予約開始日より後の日付を入力してください。',
+                'shipping_arrive_day.after_or_equal' => "到着希望日は事前に設定した機材納品日（{$request->pend_arrive_day}）以降の日付（当日含む）を入力してください。",
                 'shipping_return_day.required' => '返送機材発送予定日は必ず入力してください。',
-                'shipping_return_day.after_or_equal' => '返送機材発送予定日はセミナー開催日以降（当日を含む）の日付を入力してください。',
-                'shipping_return_day.before' => '返送機材発送予定日は予約終了日より前の日付を入力してください。',
+                'shipping_return_day.after_or_equal' => '返送機材発送予定日は現場最終日以降の日付（当日含む）を入力してください。',
                 'shipping_note.max' => '備考は200文字以下で入力してください。',
 
                

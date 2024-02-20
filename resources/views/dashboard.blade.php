@@ -16,7 +16,7 @@
         そしてあなたは大應の人です。
         @endcan
         </p>
-        <p>ユーザー個人の登録セミナー一覧や、各種情報（の概要）を要約したページにする予定です。</p>
+        <p>ユーザー個人の登録イベント一覧や、各種情報（の概要）を要約したページにする予定です。</p>
         {{-- ユーザー認証 --}}
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div class="text-red text-bold">
@@ -48,7 +48,7 @@
               <ul>
             <li>ドメイン登録が完了しました。<br>当サイトのアドレスは、<a href="https://daioh-pc.com/">https://daioh-pc.com/</a>となります。（6/8）</li>
             <li>選択機材情報ページにて、前の画面に戻る際カートが空にならなくなりました。（6/9）</li>
-            <li>機材検索ページにて、セミナー開催日・予約開始日・予約終了日欄に対する入力規則を説明文に準じる通りに設定しました。（6/14）</li>
+            <li>機材検索ページにて、機材納品日・現場最終日欄に対する入力規則を説明文に準じる通りに設定しました。（6/14）</li>
             <li>メール送信機能周りを実装しました。（6/20）</li>
             <ul>
                 <li>登録時メール認証</li>
@@ -62,7 +62,7 @@
             <li>予約一覧ページを作成しました。（6/22）<br>閲覧は全てのユーザーが可能ですが、内容の編集は予約者本人に限り行えます。</li>
             <li>依頼フォームの項目を追加しました。（6/22）</li>
             <li>機材検索時に予約中機材の表示機能を追加しました。（6/22）</li>
-            <li>セミナー開催9営業日前に送られるリマインドメールにおいて、当該セミナー情報へのリンクURLが誤って生成される不具合を修正しました。（6/26）</li>
+            <li>イベント開催9営業日前に送られるリマインドメールにおいて、当該イベント情報へのリンクURLが誤って生成される不具合を修正しました。（6/26）</li>
         </ul>
     </div>
 </div>
@@ -74,13 +74,13 @@
         <form id="send-verification" method="post" action="{{ route('verification.send') }}">
             @csrf
         </form>
-    <h4 class="text-bold">登録済みセミナー</h4>
+    <h4 class="text-bold">登録済みイベント</h4>
     <table id="kizai2" class="table table-striped table-sm caption-top">
         <thead class="thead-light">
             <tr>
                 <th scope="col">期間</td>
                 <th scope="col">予約No. </td>
-                <th scope="col">セミナー名</td>
+                <th scope="col">イベント名</td>
                 <th scope="col">現在の状態</td>
             </tr>
         </thead>
@@ -90,7 +90,7 @@
                 <tr>
                     <td class="kizai-left">{{$order->order_use_from}}～{{$order->order_use_to}}</td>
                     <td class="kizai-right"><a href="order/detail/{{$order->order_id}}">{{$order->order_no}}</a></td>
-                    <td class="kizai-right">{{$order->seminar_name}}</td>
+                    <td class="kizai-right">{{$order->event_name}}</td>
                     <td class="kizai-right">{{$order->order_status}}</td>
                 </tr>
             @endforeach

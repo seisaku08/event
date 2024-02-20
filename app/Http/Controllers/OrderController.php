@@ -82,7 +82,7 @@ class OrderController extends Controller
             return view('order/error', $data);
         }
 
-        //使用状況の確認（From:予約開始日からTo:予約終了日の間にday_machineテーブルに存在するmachine_idをピックアップする）
+        //使用状況の確認（From:機材納品日からTo:現場最終日の間にday_machineテーブルに存在するmachine_idをピックアップする）
         // if($request->from != "" && $request->to != ""){
             $from = new Carbon($order->order_use_from);
             $to = new Carbon($order->order_use_to);
@@ -264,33 +264,30 @@ class OrderController extends Controller
 
         $rules = [
                 //
-                'seminar_day' => 'required',
-                'seminar_name' => 'required',
-                'venue_zip' => 'exclude_if:seminar_venue_pending,true|required',
-                'venue_addr1' => ['exclude_if:seminar_venue_pending,true','required','max:200'],
+                'event_name' => 'required',
+                'venue_zip' => 'exclude_if:event_venue_pending,true|required',
+                'venue_addr1' => ['exclude_if:event_venue_pending,true','required','max:200'],
                 'venue_addr2' => 'max:200',
                 'venue_addr3' => 'max:200',
                 'venue_addr4' => 'max:200',
-                'venue_name' => ['exclude_if:seminar_venue_pending,true','required',],
-                'venue_tel' => 'exclude_if:seminar_venue_pending,true|required|digits_between:5,11',
-                'shipping_arrive_day' => 'exclude_if:seminar_venue_pending,true|required|before:seminar_day|after:order_use_from',
-                'shipping_return_day' => 'exclude_if:seminar_venue_pending,true|required|after_or_equal:seminar_day|before:order_use_to',
+                'venue_name' => ['exclude_if:event_venue_pending,true','required',],
+                'venue_tel' => 'exclude_if:event_venue_pending,true|required|digits_between:5,11',
+                'shipping_arrive_day' => 'exclude_if:event_venue_pending,true|required|after_or_equal:order_use_from|before:order_use_to',
+                'shipping_return_day' => 'exclude_if:event_venue_pending,true|required|after_or_equal:order_use_to',
                 'shipping_note' => 'max:200',
             ];
-
+            $ship = Carbon::parse(Order::find($request->id)->order_use_from)->format('y/m/d');
         $massages = [
                 'venue_tel.digits_between' => '配送先電話番号は市外局番から入力してください。',
-                'shipping_arrive_day.before' => '到着希望日はセミナー開催日より前の日付を入力してください。',
-                'shipping_arrive_day.after' => '到着希望日は予約開始日より後の日付を入力してください。',
-                'shipping_return_day.after_or_equal' => '返送機材発送予定日はセミナー開催日以降（当日を含む）の日付を入力してください。',
-                'shipping_return_day.before' => '返送機材発送予定日は予約終了日より前の日付を入力してください。',
+                'shipping_arrive_day.after_or_equal' => "到着希望日は事前に設定した機材納品日（{$ship}）以降の日付（当日含む）を入力してください。",
+                'shipping_arrive_day.before' => '到着希望日は現場最終日よりも前の日付を入力してください。',
+                'shipping_return_day.after_or_equal' => '返送機材発送予定日は現場最終日以降の日付（当日含む）を入力してください。',
               
             ];
 
             $attributes = [
 
-                'seminar_day' => 'セミナー開催日',
-                'seminar_name' => 'セミナー名',
+                'event_name' => 'イベント名',
                 'venue_zip' => '郵便番号',
                 'venue_name' => '配送先担当者',
                 'venue_tel' => '配送先電話番号',
@@ -310,9 +307,8 @@ class OrderController extends Controller
         }
 
         $order = Order::find($request->order_id);
-        $order->seminar_day = $request->seminar_day;
-        $order->seminar_name = $request->seminar_name;
-        $order->seminar_venue_pending = 0;
+        $order->event_name = $request->event_name;
+        $order->event_venue_pending = 0;
         $order->save();
 
         $venue = Venue::find($request->venue_id);

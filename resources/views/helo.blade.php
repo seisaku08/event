@@ -53,5 +53,5 @@
 @endsection
 
 @section('footer')
-(c)2023
+(c)2023-2024 Dai-oh Co., Ltd.
 @endsection

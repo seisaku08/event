@@ -71,7 +71,7 @@ class PhpSpreadsheetService
 
             }
 
-            //使用中の機材を検索、セミナー名を取得
+            //使用中の機材を検索、イベント名を取得
             foreach ($machines as $key => $machine) {
             $usage = DayMachine::join('machine_detail_order', 'day_machine_detail.machine_id', '=', 'machine_detail_order.machine_id')
             ->join('orders', 'machine_detail_order.order_id', '=', 'orders.order_id')
@@ -83,13 +83,13 @@ class PhpSpreadsheetService
 
             // dd($usage);
 
-            //使用中のセミナーがある場合書き込む
-            if(!empty($usage->seminar_name)){
-                $uday = Carbon::parse($usage->seminar_day)->format('md');
+            //使用中のイベントがある場合書き込む
+            if(!empty($usage->event_name)){
+                $uday = Carbon::parse($usage->shipping_arrive_day)->format('md');
                 if($usage->user_id == 2){
-                    $usage_data = "{$usage->seminar_name}（{$usage->temporary_name}（仮））";
+                    $usage_data = "{$usage->event_name}（{$usage->temporary_name}（仮））";
                 }else{
-                    $usage_data = "{$usage->seminar_name}（{$usage->name}）";
+                    $usage_data = "{$usage->event_name}（{$usage->name}）";
                 }
                 $sheet->getActiveSheet()
                 ->setCellValue([$key+2,$i+2], $usage_data);
@@ -98,7 +98,7 @@ class PhpSpreadsheetService
                     $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
                     getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00ff0000');
                 //住所登録がまだの場合、セルを黄色に塗りつぶす
-                }elseif($usage->seminar_venue_pending == true){
+                }elseif($usage->event_venue_pending == true){
                     $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
                     getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00ffff00');
                 //完了した予約の場合、セルをグレーに塗りつぶす
@@ -227,8 +227,8 @@ class PhpSpreadsheetService
                 '東京都千代田区内神田1-7-5',//ご依頼主住所
                 '旭栄ビル',//ご依頼主住所（アパートマンション名）
                 '株式会社 大應',//ご依頼主名
-                'セミナー使用機材',//品名１
-                $ship_data->seminar_name,//品名２
+                'イベント使用機材',//品名１
+                $ship_data->event_name,//品名２
                 '精密機器',//荷扱い１
                 "予約No.".$ship_data->order_no,//記事
                 // "=roundup(".$machines->count()."/7,0)",//発行枚数
@@ -254,8 +254,8 @@ class PhpSpreadsheetService
                 '東京都千代田区内神田1-7-5',//ご依頼主住所
                 '旭栄ビル',//ご依頼主住所（アパートマンション名）
                 '株式会社 大應',//ご依頼主名
-                'セミナー使用機材 返送',//品名１
-                $ship_data->seminar_name,//品名２
+                'イベント使用機材 返送',//品名１
+                $ship_data->event_name,//品名２
                 '精密機器',//荷扱い１
                 "予約No.".$ship_data->order_no,//記事
                 (int)ceil($machines->count()/7),//発行枚数
@@ -273,7 +273,7 @@ class PhpSpreadsheetService
 
         $nouhin = $spread -> getSheet(1);
         $nouhin->setCellValue('B3', "{$ship_data->name} 様（予約No.{$ship_data->order_no}）");
-        $nouhin->setCellValue('B9', "案件名：{$ship_data->seminar_name}");
+        $nouhin->setCellValue('B9', "案件名：{$ship_data->event_name}");
         $nouhin->setCellValue('E3', Carbon::parse($ship_data->shipping_arrive_day)->format("Y年n月j日"));
 
         foreach($machines as $key => $machine){
@@ -292,8 +292,8 @@ class PhpSpreadsheetService
         $ship_day = Carbon::parse($ship_data->shipping_arrive_day)->format("n月j日");
         $shiji->setCellValue('A2', Carbon::now()->format("Y年n月j日"));
         $shiji->setCellValue('A6', "No.{$ship_data->order_no}");
-        $shiji->setCellValue('C6', $ship_data->seminar_name);
-        $shiji->setCellValue('A8', Carbon::parse($ship_data->seminar_day)->format("Y年n月j日"));
+        $shiji->setCellValue('C6', $ship_data->event_name);
+        $shiji->setCellValue('A8', Carbon::parse($ship_data->shipping_arrive_day)->format("Y年n月j日"));
         $shiji->setCellValue('C8', Common::daybefore(Carbon::parse($ship_data->shipping_arrive_day),2)->format("n月j日"));
         $shiji->setCellValue('E8', "{$ship_day}－{$ship_data->shipping_arrive_time}");
         $shiji->setCellValue('A10', $ship_data->shipping_note);

@@ -13,7 +13,7 @@
         @csrf
             {{-- <div class="row border">
             <div class="col">並び方を変える
-                {{ Form::radio('orderby', 'seminar_name') }}
+                {{ Form::radio('orderby', 'event_name') }}
             </div>
             <div class="col"><input type="submit"></div>
             </div> --}}
@@ -23,7 +23,7 @@
         <div class="row border bg-secondary">
             <div class="col-3"><label>期間</label></div>
             <div class="col-2"><label>予約No.</label></div>
-            <div class="col"><label>セミナー名</label></div>
+            <div class="col"><label>イベント名</label></div>
             <div class="col-2"><label>予約者名</label></div>
             <div class="col-2"><label>現在の状態</label></div>
         </div>
@@ -33,7 +33,7 @@
         <div class="row border {{$order->user_id == 2? "text-danger bg-warning" : ""}}">
             <div class="col-3">{{$order->order_use_from}}～{{$order->order_use_to}}</div>
             <div class="col-2 text-bold"><a href="order/detail/{{$order->order_id}}">{{$order->order_no}}</a></div>
-            <div class="col">{{$order->seminar_name}}</div>
+            <div class="col">{{$order->event_name}}</div>
             <div class="col-2">{{$order->user_id == 2? $order->temporary_name."（仮）" : "$order->name"}}</div>
             <div class="col-2 {{$order->user_id == 2? "text-danger text-bold" : ""}}">{{$order->order_status}}</div>
         </div>
@@ -57,7 +57,7 @@
         @csrf
             {{-- <div class="row border">
             <div class="col">並び方を変える
-                {{ Form::radio('orderby', 'seminar_name') }}
+                {{ Form::radio('orderby', 'event_name') }}
             </div>
             <div class="col"><input type="submit"></div>
             </div> --}}
@@ -67,7 +67,7 @@
         <div class="row border bg-secondary">
             <div class="col-3"><label>期間</label></div>
             <div class="col-2"><label>予約No.</label></div>
-            <div class="col"><label>セミナー名</label></div>
+            <div class="col"><label>イベント名</label></div>
             <div class="col-2"><label>予約者名</label></div>
             <div class="col-2"><label>現在の状態</label></div>
         </div>
@@ -77,7 +77,7 @@
         <div class="row border {{$order->user_id == 2? "text-danger bg-warning" : ""}}">
             <div class="col-3">{{$order->order_use_from}}～{{$order->order_use_to}}</div>
             <div class="col-2 text-bold"><a href="order/detail/{{$order->order_id}}">{{$order->order_no}}</a></div>
-            <div class="col">{{$order->seminar_name}}</div>
+            <div class="col">{{$order->event_name}}</div>
             <div class="col-2">{{$order->user_id == 2? $order->temporary_name."（仮）" : "$order->name"}}</div>
             <div class="col-2 {{$order->user_id == 2? "text-danger text-bold" : ""}}">{{$order->order_status}}</div>
         </div>
@@ -101,7 +101,7 @@
         @csrf
             {{-- <div class="row border">
             <div class="col">並び方を変える
-                {{ Form::radio('orderby', 'seminar_name') }}
+                {{ Form::radio('orderby', 'event_name') }}
             </div>
             <div class="col"><input type="submit"></div>
             </div> --}}
@@ -111,7 +111,7 @@
         <div class="row border bg-secondary">
             <div class="col-3"><label>期間</label></div>
             <div class="col-2"><label>予約No.</label></div>
-            <div class="col"><label>セミナー名</label></div>
+            <div class="col"><label>イベント名</label></div>
             <div class="col-2"><label>予約者名</label></div>
             <div class="col-2"><label>現在の状態</label></div>
         </div>
@@ -121,7 +121,7 @@
         <div class="row border {{$order->user_id == 2? "text-danger bg-warning" : ""}}">
             <div class="col-3">{{$order->order_use_from}}～{{$order->order_use_to}}</div>
             <div class="col-2 text-bold"><a href="order/detail/{{$order->order_id}}">{{$order->order_no}}</a></div>
-            <div class="col">{{$order->seminar_name}}</div>
+            <div class="col">{{$order->event_name}}</div>
             <div class="col-2">{{$order->user_id == 2? $order->temporary_name."（仮）" : "$order->name"}}</div>
             <div class="col-2 {{$order->user_id == 2? "text-danger text-bold" : ""}}">{{$order->order_status}}</div>
         </div>

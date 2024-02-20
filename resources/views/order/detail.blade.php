@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'セミナー詳細 | 予約No. '.$orders->order_no)
+@section('title', 'イベント詳細 | 予約No. '.$orders->order_no)
 @section('css')
 <link href="{{asset('/css/sendstyle.css')}}" rel="stylesheet" type="text/css">
 
@@ -46,7 +46,7 @@
 			<td class="w30">{{$orders->user_tel}}</td>
 		</tr>
 	<tr class="midashi">
-			<th colspan="4">セミナー情報
+			<th colspan="4">イベント情報
 				@if($user->role == 1 || $user->id == $orders->user_id)
 				<a class="btn btn-primary btn-sm ml-3 p-1" href="{{ route('order.edit', $orders->order_id) }}">編集</a>
 				@else
@@ -55,24 +55,24 @@
 			</th>
 		</tr>
 		<tr>
-			<td class="w30"><label>セミナー名</label></td>
-			<td class="w50">{{$orders->seminar_name}}</td>
+			<td class="w30"><label>イベント名</label></td>
+			<td class="w50">{{$orders->event_name}}</td>
 		</tr>
 		<tr>
 			<td class="w30"><label>現在の状態</label></td>
 			<td class="w25">{{ $orders->order_status }}</td>
 		</tr>
 		<tr>
-			<td class="w30"><label>セミナー開催日</label></td>
-			<td class="w25">{{ $orders->seminar_day }}</td>
+			<td class="w30"><label>予約期間:</label></td>
+			<td class="w25">{{ $orders->order_use_from }} ～ {{ $orders->order_use_to }}</td>
 		</tr>
 		<tr>
-			<td class="w30"><label>予約開始日:</label></td>
-			<td class="w25">{{ $orders->order_use_from }}</td>
+			<td class="w30"><label>機材納品日:</label></td>
+			<td class="w25">{{ $orders->pend_arrive_day }}</td>
 		</tr>
 		<tr>
-			<td class="w30"><label>予約終了日:</label></td>
-			<td class="w25">{{ $orders->order_use_to }}</td>
+			<td class="w30"><label>現場最終日:</label></td>
+			<td class="w25">{{ $orders->use_end_day }}</td>
 		</tr>
 		<tr class="midashi">
 			<th colspan="4">配送先情報
@@ -141,7 +141,7 @@
 	<tr class="midashi">
 		<th colspan="4">選択機材情報
 			@if($user->role == 1 || $user->id == $orders->user_id)
-				@if(Carbon::today() > Common::daybefore(Carbon::parse($orders->seminar_day),3))
+				@if(Carbon::today() > Common::daybefore(Carbon::parse($orders->shipping_arrive_day),3))
 				<div class="btn btn-primary btn-sm ml-3 p-1 disabled">変更可能期間を過ぎたため編集できません</div>
 
 				@else
@@ -185,5 +185,5 @@
 @endsection
 
 @section('footer')
-(c)2023
+(c)2023-2024 Dai-oh Co., Ltd.
 @endsection

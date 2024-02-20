@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'セミナー情報・配送先登録')
+@section('title', 'イベント情報・配送先登録')
 @section('css')
 {{-- <link href="{{asset('/css/style.css')}}" rel="stylesheet" type="text/css"> --}}
 
@@ -39,29 +39,30 @@
                 <td class="w30">{{$user->user_tel}}</td>
             </tr>
             <tr class="midashi">
-                <th>セミナー情報</th>
+                <th>イベント情報</th>
             </tr>
             <tr>
-                <td class="w30"><label>セミナー名</label><span class="red small">＊必須 </span></td>
-                <td class="w50"><input type="text" name="seminar_name" placeholder=""  value="{{old('seminar_name')}}"></td>
+                <td class="w30"><label>イベント名</label><span class="red small">＊必須 </span></td>
+                <td class="w50"><input type="text" name="event_name" placeholder=""  value="{{old('event_name')}}"></td>
             </tr>
             <tr>
-                <td class="w30"><label>セミナー開催日</label></td>
-                <td class="w25">{{ $input->seminar_day }}{{ Form::hidden('seminar_day', $input->seminar_day) }}{{ old('seminar_day') }}</td>
+                <td class="w30"><label>予約期間（自動計算）:</label></td>
+                <td class="w25">{{ $input->order_use_from }}{{ Form::hidden('order_use_from', $input->order_use_from) }}{{ old('order_use_from') }}
+                    ～ {{ $input->order_use_to }}{{ Form::hidden('order_use_to', $input->order_use_to) }}{{ old('order_use_to') }}</td>
             </tr>
             <tr>
-                <td class="w30"><label>予約開始日:</label></td>
-                <td class="w25">{{ $input->order_use_from }}{{ Form::hidden('order_use_from', $input->order_use_from) }}{{ old('order_use_from') }}</td>
+                <td class="w30"><label>機材納品日:</label></td>
+                <td class="w25">{{ $input->pend_arrive_day }}{{ Form::hidden('pend_arrive_day', $input->pend_arrive_day) }}{{ old('pend_arrive_day') }}</td>
             </tr>
             <tr>
-                <td class="w30"><label>予約終了日:</label></td>
-                <td class="w25">{{ $input->order_use_to }}{{ Form::hidden('order_use_to', $input->order_use_to) }}{{ old('order_use_to') }}</td>
+                <td class="w30"><label>現場最終日:</label></td>
+                <td class="w25">{{ $input->use_end_day }}{{ Form::hidden('use_end_day', $input->use_end_day) }}{{ old('use_end_day') }}</td>
             </tr>
             <tr class="midashi">
                 <th>配送先情報</th>
             </tr>
             <tr>
-                <td class="w100"><label for="pending" class="thin">配送先情報を後日入力する場合は、チェックボックスにチェックを入れてください。→<input type="checkbox" class="dekai" name="seminar_venue_pending" placeholder="" id="pending" value="true"{{ old('seminar_venue_pending') == true ? ' checked' : '' }}></label></td>
+                <td class="w100"><label for="pending" class="thin">配送先情報を後日入力する場合は、チェックボックスにチェックを入れてください。→<input type="checkbox" class="dekai" name="event_venue_pending" placeholder="" id="pending" value="true"{{ old('event_venue_pending') == true ? ' checked' : '' }}></label></td>
             </tr>
             <tr>
                 <td class="w30"><label>郵便番号</label><span class="red small">＊必須</span></td>
@@ -99,7 +100,7 @@
             <tr>
                 <td class="w30"><label>到着希望日時</label><span class="red small">＊必須</span></td>
                 <td class="w40">
-                    <input type="date" name="shipping_arrive_day" placeholder="" value="{{old('shipping_arrive_day')}}">
+                    <input type="date" name="shipping_arrive_day" placeholder="" value="{{ $input->pend_arrive_day }}{{old('shipping_arrive_day')}}">
                     <select name="shipping_arrive_time">
                         <option value="指定なし"{{ old('shipping_arrive_time') == "指定なし" ? ' selected' : '' }}>指定なし</option>
                         <option value="午前中"{{ old('shipping_arrive_time') == "午前中" ? ' selected' : '' }}>午前中</option>

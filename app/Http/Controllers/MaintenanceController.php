@@ -14,7 +14,7 @@ class MaintenanceController extends Controller
 
         $data = [
             'records' => MachineDetail::all(),
-            'orders' => Order::orderBy('seminar_day','asc')->get(),
+            'orders' => Order::orderBy('order_use_from','asc')->get(),
             'input' => $request,
         ];
         return view('maintenance.index', $data);
@@ -25,7 +25,7 @@ class MaintenanceController extends Controller
 
         $data = [
             'records' => MachineDetail::all(),
-            'orders' => Order::orderBy('seminar_day','asc')->get(),
+            'orders' => Order::orderBy('order_use_from','asc')->get(),
             'input' => $request,
         ];
         return view('maintenance.work', $data);
@@ -36,7 +36,7 @@ class MaintenanceController extends Controller
         // dd($request);
         $data = [
             'records' => MachineDetail::all(),
-            'orders' => Order::orderBy('seminar_day','asc')->get(),
+            'orders' => Order::orderBy('order_use_from','asc')->get(),
             'input' => $request,
         ];
         return view('maintenance.work', $data);

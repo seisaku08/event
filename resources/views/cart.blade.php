@@ -14,8 +14,8 @@
                 <th scope="col" colspan="4">選択機材情報</th>
             </thead> --}}
             <tr>
-                <td class="text-center" colspan="2"><label>予約開始日:</label>{{ $from }}</td>
-                <td class="text-center" colspan="2"><label>予約終了日:</label>{{ $to }}</td>
+                <td class="text-center" colspan="4"><label>予約期間:</label>{{ $from }}～{{ $to }}<br>
+                    <label>機材納品日:</label>{{ $arrive }} 　<label>現場最終日:</label>{{ $useend }}</td>
             </tr>
             <tr>
                 <th>#</th>
@@ -39,7 +39,8 @@
         </table>
 
         {{ Form::open(['route'=>'sendto']) }}
-        {{ Form::hidden('seminar_day', $seminar_day) }}
+        {{ Form::hidden('pend_arrive_day', $arrive) }}
+        {{ Form::hidden('use_end_day', $useend) }}
         {{ Form::hidden('order_use_from', $from) }}
         {{ Form::hidden('order_use_to', $to) }}
         {{ Form::hidden('id', null) }}

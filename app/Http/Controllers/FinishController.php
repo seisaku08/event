@@ -39,17 +39,17 @@ class FinishController extends Controller
 
             //識別トークンが存在しない（以前適切にセッションが通っている＝ブラウザバック等で重複データが送られてきている）
             if(!$request->session()->has('Session.Token')){
-                throw new Exception("エラー：セッショントークンが読み込めません。ブラウザを開いたまま長時間経過したか、セミナー名「{$request->seminar_name}」が登録済みである可能性があります。", 499);
+                throw new Exception("エラー：セッショントークンが読み込めません。ブラウザを開いたまま長時間経過したか、イベント名「{$request->event_name}」が登録済みである可能性があります。", 499);
             }
             //識別トークンが既に登録済み
             elseif(Order::where('token', $request->session()->get('Session.Token'))->exists() == true){
                 
                 $err = Order::where('token', $request->session()->get('Session.Token'))->first();
-                throw new Exception("エラー：予約No. {$err->order_no}「{$err->seminar_name}」は登録済みです。", 499);
+                throw new Exception("エラー：予約No. {$err->order_no}「{$err->event_name}」は登録済みです。", 499);
             }
 
-            //セミナー開催日から連番を取得
-            $sday = new Carbon($request->seminar_day);
+            //機材納品日から連番を取得
+            $sday = new Carbon($request->from);
             $sno = Sequence::getNewOrderNo($sday->format('ymd'));
             $order_no = sprintf('%s%04d', $sday->format('ymd'), $sno);
 
@@ -58,19 +58,20 @@ class FinishController extends Controller
                 //order_noは日付（西暦下2桁＋月日の6桁）＋連番
                 $order->order_no = $order_no;
                 $order->user_id = Auth::user()->id;
-                $order->seminar_day = $request->seminar_day;
-                $order->seminar_name = $request->seminar_name;
+                $order->event_name = $request->event_name;
                 $order->order_status = '受付済';
+                $order->pend_arrive_day = $request->pend_arrive_day;
+                $order->use_end_day = $request->use_end_day;
                 $order->order_use_from = $request->order_use_from;
                 $order->order_use_to = $request->order_use_to;
                 $order->token = $request->session()->get('Session.Token');
-                if($request->seminar_venue_pending == true){
-                    $order->seminar_venue_pending = 1;
+                if($request->event_venue_pending == true){
+                    $order->event_venue_pending = 1;
                 }else{
-                    $order->seminar_venue_pending = 0;
+                    $order->event_venue_pending = 0;
                 }
                 $order->reminder_sent = 0;
-                $order->nine_day_before = Common::daybefore(Carbon::parse($order->seminar_day), 9);
+                $order->nine_day_before = Common::daybefore(Carbon::parse($order->from), 9);
                 $order->save();
 
             //order_idをmachine_detail_orderテーブルのために取得

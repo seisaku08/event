@@ -99,8 +99,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'noreply@daioh-pc.com'),
-        'name' => env('MAIL_FROM_NAME', '㈱大應 セミナー機材管理システム'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@daioh-pcevent.com'),
+        'name' => env('MAIL_FROM_NAME', '㈱大應 イベント機材管理システム'),
     ],
 
     /*

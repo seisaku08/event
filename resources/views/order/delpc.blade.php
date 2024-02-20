@@ -36,22 +36,18 @@
 		<td class="w30">{{$orders->user_tel}}</td>
 	</tr>
 <tr class="midashi">
-		<th colspan="4">セミナー情報</th>
+		<th colspan="4">イベント情報</th>
 	</tr>
 	<tr>
-		<td class="w30"><label>セミナー名</label></td>
-		<td class="w50">{{$orders->seminar_name}}</td>
+		<td class="w30"><label>イベント名</label></td>
+		<td class="w50">{{$orders->event_name}}</td>
 	</tr>
 	<tr>
-		<td class="w30"><label>セミナー開催日</label></td>
-		<td class="w25">{{ $orders->seminar_day }}</td>
-	</tr>
-	<tr>
-		<td class="w30"><label>予約開始日:</label></td>
+		<td class="w30"><label>機材納品日:</label></td>
 		<td class="w25">{{ $orders->order_use_from }}</td>
 	</tr>
 	<tr>
-		<td class="w30"><label>予約終了日:</label></td>
+		<td class="w30"><label>現場最終日:</label></td>
 		<td class="w25">{{ $orders->order_use_to }}</td>
 	</tr>
 </table>
@@ -91,5 +87,5 @@
 @endsection
 
 @section('footer')
-(c)2023
+(c)2023-2024 Dai-oh Co., Ltd.
 @endsection

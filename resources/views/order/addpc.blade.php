@@ -9,7 +9,7 @@
 <h1 class="p-2">@yield('title')</h1>
   <div class="box1000 ">
     <p>
-      選択されたセミナーの予約期間内に使用可能な機材が一覧表示されます。<br>
+      選択されたイベントの予約期間内に使用可能な機材が一覧表示されます。<br>
       <span class="text-red">※予約期間の変更はできません。</span>
     </p>
   </div>
@@ -17,24 +17,20 @@
     <div class="row">
       <div class="column col-12">
         <div class="col text-center p-1">
-          <span class="larger"><label>セミナー名:
-          {{ $order->seminar_name }}</label></span>
+          <span class="larger"><label>イベント名:
+          {{ $order->event_name }}</label></span>
         </div>
       </div>
         <div class="column col-8">
           <div class="row">
-          <div class="col text-center p-1">
-            <label>セミナー開催日:</label>
-            <span class="larger">{{ $order->seminar_day }}</span>
-          </div>
         </div>
         <div class="row">
           <div class="col text-center p-1">
-          <label>予約開始日:</label>
+          <label>機材納品日:</label>
           <span class="larger">{{ $order->order_use_from }}</span>
         </div>
           <div class="col text-center p-1">
-            <label>予約終了日:</label>
+            <label>現場最終日:</label>
           <span class="larger">{{ $order->order_use_to }}</span>
           </div>
         </div>

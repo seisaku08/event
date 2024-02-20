@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'セミナー情報変更 | 予約No. '.$orders->order_no)
+@section('title', 'イベント情報変更 | 予約No. '.$orders->order_no)
 @section('content')
 <link href="{{asset('/css/sendstyle.css')}}" rel="stylesheet" type="text/css">
 <script src="/js/number.js"></script>
@@ -26,15 +26,11 @@
  {{-- <?php dump($orders); ?>  --}}
 	<table id="kizai2">
 		<tr class="midashi">
-			<th colspan="5">セミナー情報</th>
+			<th colspan="5">イベント情報</th>
 		</tr>
 		<tr>
-			<td class="w30"><label>セミナー名</label><span class="red small">＊必須</span></td>
-			<td class="w50"><input type="text" name="seminar_name" placeholder="" value="{{!empty(old('seminar_name'))? old('seminar_name'):$orders->seminar_name}}"></td>
-		</tr>
-		<tr>
-			<td class="w30"><label>セミナー開催日</label><span class="red small">＊必須</span></td>
-			<td class="w25"><input type="date" name="seminar_day" placeholder="" value="{{!empty(old('seminar_day'))? old('seminar_day'):$orders->seminar_day}}"></td>
+			<td class="w30"><label>イベント名</label><span class="red small">＊必須</span></td>
+			<td class="w50"><input type="text" name="event_name" placeholder="" value="{{!empty(old('event_name'))? old('event_name'):$orders->event_name}}"></td>
 		</tr>
 		<tr>
 			<td class="w30"><label>予約期間</label><br>（変更できません。）</td>
@@ -141,5 +137,5 @@
 @endsection
 
 @section('footer')
-(c)2023
+(c)2023-2024 Dai-oh Co., Ltd.
 @endsection

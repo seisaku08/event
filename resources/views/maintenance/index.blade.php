@@ -21,17 +21,17 @@
       </div>
       @endif
 
-    <h4 class="text-bold text-center">セミナーからメンテナンス機材を選択する</h4>
+    <h4 class="text-bold text-center">イベントからメンテナンス機材を選択する</h4>
     <div id='list2'>
       <?php use App\Libs\Common;?>
       <table id="kizai2" class="table table-striped table-sm caption-top">
             <thead class="thead-light">
               <tr>
                 <th>　</th>
-                <th scope="col">セミナー開催日</td>
+                <th scope="col">機材納品日</td>
                 <th scope="col">予約No. </td>
                 <th scope="col">状態</td>
-                <th scope="col">セミナー名</td>
+                <th scope="col">イベント名</td>
             </tr>
         </thead>
         </thead>
@@ -45,10 +45,10 @@
                             {{ Form::hidden('order_id', $order->order_id) }}
                             {{ Form::close() }}
                         </td>
-                        <td class="kizai-left">{{$order->seminar_day}}（{{ Common::businessdaycheck($order->seminar_day) }}）</td>
+                        <td class="kizai-left">{{$order->shipping_arrive_day}}（{{ Common::businessdaycheck($order->shipping_arrive_day) }}）</td>
                         <td class="kizai-right"><a href="order/detail/{{$order->order_id}}" target="_blank">{{$order->order_no}}</a></td>
                         <td class="kizai-right">{{$order->order_status}}</td>
-                        <td class="kizai-right">{{$order->seminar_name}}</td>
+                        <td class="kizai-right">{{$order->event_name}}</td>
                     </tr>
                 @endforeach
             @else

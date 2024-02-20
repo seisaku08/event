@@ -12,17 +12,17 @@
     <p class="text-left">お世話になっております。<br>
         株式会社大應【機材管理システム】からご連絡いたします。</p>
     <p class="text-left">
-        予約No. {{ $orderdata['order']['order_no'] }}として承りましたセミナーが、{{ Common::businessdaycheck($orderdata['order']['seminar_day']) }}の開催となりました。<br>
+        予約No. {{ $orderdata['order']['order_no'] }}として承りましたイベントが、{{ Common::businessdaycheck($orderdata['order']['shipping_arrive_day']) }}の開催となりました。<br>
         ご予約に変更はございませんでしょうか。万一内容の変更や取消などがございましたら、以下よりお手続きをお願いいたします。</p>
     {{-- 送り先未入力の場合、解消されるまで送られ続けることへの注意書 --}}
-    @if( $orderdata['order']['seminar_venue_pending'] == true )
+    @if( $orderdata['order']['event_venue_pending'] == true )
         <p class="text-left">また、本予約につきましては<span class="text-red text-bold">配送先住所が未入力となっております。</span><br>このままでは配送のお手続きを進めることができませんので、ご入力をお願いいたします。</p>
         <p class="text-left">なお、未入力の状態が解消されるまで、1日ごとに本メールが送信されます。ご了承ください。</p>
     @endif
     {{-- https://daioh-pc.com/order/detail/{{$orderdata['order']['order_id']}} --}}
         <a href="{{route("order.detail",$orderdata['order']['order_id'])}}">変更はこちら（webブラウザが開きます）</a><br>
         <h5 class="mt-3 mb-2">【予約の変更・取消について】</h5>
-<p class="text-left">システムを利用しての予約変更・取消は、セミナー開催日の3営業日前（本予約の場合、{{ Common::daybefore(Carbon::parse($orderdata['order']->seminar_day),3)->format('Y年n月j日') }}）まで受付可能です。<br>
+<p class="text-left">システムを利用しての予約変更・取消は、機材納品日の3営業日前（本予約の場合、{{ Common::daybefore(Carbon::parse($orderdata['order']->shipping_arrive_day),3)->format('Y年n月j日') }}）まで受付可能です。<br>
     システムによる受付締切後のご相談や、ご不明な点がございましたら、下記お問い合わせ先までご連絡くださいますようお願いいたします。</p>
     
 <table id="form">
@@ -43,28 +43,24 @@
         <td class="w30">{{ $orderdata['user']['user_tel'] }}</td>
     </tr>
     <tr class="midashi">
-        <th colspan="4">セミナー情報（予約No. {{ $orderdata['order']['order_no'] }}）</th>
+        <th colspan="4">イベント情報（予約No. {{ $orderdata['order']['order_no'] }}）</th>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー名</label></td>
-        <td class="w50">{{ $orderdata['order']['seminar_name'] }}</td>
+        <td class="w25"><label>イベント名</label></td>
+        <td class="w50">{{ $orderdata['order']['event_name'] }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー開催日</label></td>
-        <td class="w25">{{ $orderdata['order']['seminar_day'] }}</td>
-    </tr>
-    <tr>
-        <td class="w25"><label>予約開始日:</label></td>
+        <td class="w25"><label>機材納品日:</label></td>
         <td class="w25">{{ $orderdata['order']['order_use_from'] }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>予約終了日:</label></td>
+        <td class="w25"><label>現場最終日:</label></td>
         <td class="w25">{{ $orderdata['order']['order_use_to'] }}</td>
     </tr>
     <tr class="midashi">
         <th colspan="4">配送先情報</th>
     </tr>
-    @if( $orderdata['order']['seminar_venue_pending'] == true )
+    @if( $orderdata['order']['event_venue_pending'] == true )
     <tr>
         <td class="w100 text-center text-red"><label>未入力</label></td>
     </tr>
@@ -132,7 +128,7 @@
 〒101-0047　
 東京都千代田区内神田1-7-5<br>
 TEL: 03-3292-1488<br>
-e-mail: <a href="support@daioh-pc.com">support@daioh-pc.com</a>
+e-mail: <a href="support@daioh-pcevent.com">support@daioh-pcevent.com</a>
   </body>
 </html>
 {{-- <?php dd($orderdata);?> --}}

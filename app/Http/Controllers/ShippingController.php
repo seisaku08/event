@@ -21,9 +21,9 @@ class ShippingController extends Controller
         // dd($request);
         $data = [
             'records' => MachineDetail::all(),
-            'orders' => Order::join('shippings','orders.order_id', '=', 'shippings.order_id')->wherein('orders.order_status', ['受付済','仮登録'])->orderBy('seminar_day','asc')->get(),
+            'orders' => Order::join('shippings','orders.order_id', '=', 'shippings.order_id')->wherein('orders.order_status', ['受付済','仮登録'])->orderBy('order_use_from','asc')->get(),
             'input' => $request,
-            'back_order' => Order::join('shippings','orders.order_id', '=', 'shippings.order_id')->wherein('orders.order_status', ['発送済'])->orderBy('seminar_day','asc')->get(),
+            'back_order' => Order::join('shippings','orders.order_id', '=', 'shippings.order_id')->wherein('orders.order_status', ['発送済'])->orderBy('order_use_from','asc')->get(),
         ];
         return view('shipping.index', $data);
 

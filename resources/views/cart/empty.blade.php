@@ -14,8 +14,8 @@
                 <th scope="col" colspan="4">選択機材情報</th>
             </thead> --}}
             <tr>
-                <td class="text-center" colspan="2"><label>予約開始日:</label></td>
-                <td class="text-center" colspan="2"><label>予約終了日:</label></td>
+                <td class="text-center" colspan="2"><label>機材納品日:</label></td>
+                <td class="text-center" colspan="2"><label>現場最終日:</label></td>
             </tr>
             <tr>
                 <th>#</th>

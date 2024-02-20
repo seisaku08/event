@@ -10,7 +10,7 @@
     {{-- <p class="text-left">※このメールはシステムからの自動送信です</p> --}}
     <p class="text-left">お世話になっております。<br>
         株式会社大應【機材管理システム】からご連絡いたします。</p>
-        <p class="text-left">ご予約をいただいておりましたセミナーにつきまして、会場への機材発送を行いました。</p>
+        <p class="text-left">ご予約をいただいておりましたイベントにつきまして、会場への機材発送を行いました。</p>
         <p class="text-left">伝票番号等、発送情報は以下の通りです。</p>
         <p class="text-left">万一ご不明な点がございましたら、下記お問い合わせ先までご連絡くださいますようお願いいたします。
     <h4 class="mt-3 text-center">ご予約情報（予約No. {{$shippingdata['orders']['order_no']}}）</h4>
@@ -28,7 +28,7 @@
     <tr class="midashi">
         <th colspan="4">配送先情報</th>
     </tr>
-    @if( $shippingdata['orders']['seminar_venue_pending'] == true )
+    @if( $shippingdata['orders']['event_venue_pending'] == true )
     <tr>
         <td class="w100 text-center"><label>後日入力</label></td>
     </tr>
@@ -97,22 +97,18 @@
         <td class="w30">{{ $shippingdata['orders']['user_tel'] }}</td>
     </tr>
     <tr class="midashi">
-        <th colspan="4">セミナー情報</th>
+        <th colspan="4">イベント情報</th>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー名</label></td>
-        <td class="w50">{{ $shippingdata['orders']['seminar_name'] }}</td>
+        <td class="w25"><label>イベント名</label></td>
+        <td class="w50">{{ $shippingdata['orders']['event_name'] }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー開催日</label></td>
-        <td class="w25">{{ $shippingdata['orders']['seminar_day'] }}</td>
-    </tr>
-    <tr>
-        <td class="w25"><label>予約開始日:</label></td>
+        <td class="w25"><label>機材納品日:</label></td>
         <td class="w25">{{ $shippingdata['orders']['order_use_from'] }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>予約終了日:</label></td>
+        <td class="w25"><label>現場最終日:</label></td>
         <td class="w25">{{ $shippingdata['orders']['order_use_to'] }}</td>
     </tr>
 
@@ -141,7 +137,7 @@
 〒101-0047　
 東京都千代田区内神田1-7-5<br>
 TEL: 03-3292-1488<br>
-e-mail: <a href="support@daioh-pc.com">support@daioh-pc.com</a>
+e-mail: <a href="support@daioh-pcevent.com">support@daioh-pcevent.com</a>
   </body>
 </html>
 {{-- <?php dd($shippingdata);?> --}}

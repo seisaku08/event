@@ -13,7 +13,7 @@
         @csrf
             {{-- <div class="row border">
             <div class="col">並び方を変える
-                {{ Form::radio('orderby', 'seminar_name') }}
+                {{ Form::radio('orderby', 'event_name') }}
             </div>
             <div class="col"><input type="submit"></div>
             </div> --}}

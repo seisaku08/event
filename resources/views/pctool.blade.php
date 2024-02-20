@@ -10,38 +10,24 @@
   <div class="box1000 ">
     <p>
       使用期間を入力すると、期間内に使用可能な機材が一覧表示されます。<br>
-      準備・配送に要する期間を確保するため、予約（入力）できる期間には以下の制限がございます。<a class="" data-toggle="collapse" href="#scheduleinfo" role="button" aria-expanded="false" aria-controls="scheduleinfo"><b>詳細（クリックで開く）</b></a><br>
-     <div class="collapse" id="scheduleinfo">
-      <div class="card card-body">
-        <p>
-        「セミナー開催日（複数日開催の場合、その初日）」は<b>本日より4営業日以降（{{ App\Libs\Common::dayafter(today(),4)->isoFormat('YYYY年M月D日（ddd）'); }}）</b><br>
-        「予約開始日」は<b>セミナー開催日の3営業日以前（上記の場合、{{ App\Libs\Common::dayafter(today(),1)->isoFormat('YYYY年M月D日（ddd）'); }}）</b><br>
-        「予約終了日」は<b>セミナー開催日（複数日開催、または連続使用の場合はその最終日）の3営業日以降（上記の場合、{{ App\Libs\Common::dayafter(today(),7)->isoFormat('YYYY年M月D日（ddd）'); }}）</b>
-      </p>
-      </div>
-    </div>　
+      準備・配送に要する期間を確保するため、「機材納品日」は<b>翌営業日より数えて3営業日目（{{ App\Libs\Common::dayafter(today(),4)->isoFormat('YYYY年M月D日（ddd）'); }}～）以降
+        </b>のみ選択可能です。<br>
     <b> ＜参考＞</b>荷物の配送所要日数は<a href="http://date.kuronekoyamato.co.jp/date/Main?LINK=TK" target="_blank"><b>こちら</b></a>から検索できます（ヤマト運輸のサイトが開きます）
 
     </p>
   </div>
-  <form method="post" action="">
+  <form method="post" action="pctool">
     @csrf
 <div class="container darkgray box1000">
     <div class="row">
       <div class="column col-8">
         <div class="row">
           <div class="col text-center p-1">
-            <label>セミナー開催日（複数日の場合は初日）</label>
-            <input type="date" name="seminar_day" value="{{$input->seminar_day}}{{ old('seminar_day') }}" onchange="submit(this.form)">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col text-center p-1">
-          <label>予約開始日</label>
+          <label>機材納品日</label>
           <input type="date" name="from" value="{{$input->from}}{{ old('from') }}" onchange="submit(this.form)">
           </div>
           <div class="col text-center p-1">
-            <label>予約終了日</label>
+            <label>現場最終日</label>
             <input type="date" name="to" value="{{$input->to}}{{ old('to') }}" onchange="submit(this.form)">
           </div>
         </div>
@@ -72,7 +58,6 @@
 <div id='list'>
   {{ Form::open(['route' => 'addCart', 'id' => 'pctool']) }}
     {{ Form::hidden('user_id', $user->id) }}
-    {{ Form::hidden('seminar_day', $input->seminar_day)}}
     {{ Form::hidden('from', $input->from)}}
     {{ Form::hidden('to', $input->to)}}
     <table class="table table-striped table-sm" id="pctool">

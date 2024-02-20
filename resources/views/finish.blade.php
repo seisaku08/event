@@ -24,28 +24,28 @@
         <td class="w30">{{$user->user_tel}}</td>
     </tr>
     <tr class="midashi">
-        <th colspan="4">セミナー情報</th>
+        <th colspan="4">イベント情報</th>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー名</label></td>
-        <td class="w50">{{ $input->seminar_name }}</td>
+        <td class="w25"><label>イベント名</label></td>
+        <td class="w50">{{ $input->event_name }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>セミナー開催日</label></td>
-        <td class="w25">{{ $input->seminar_day }}</td>
+        <td class="w30"><label>予約期間:</label></td>
+        <td class="w25">{{ $input->order_use_from }} ～ {{ $input->order_use_to }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>予約開始日:</label></td>
-        <td class="w25">{{ $input->order_use_from }}</td>
+        <td class="w30"><label>機材納品日:</label></td>
+        <td class="w25">{{ $input->pend_arrive_day }}</td>
     </tr>
     <tr>
-        <td class="w25"><label>予約終了日:</label></td>
-        <td class="w25">{{ $input->order_use_to }}</td>
+        <td class="w30"><label>現場最終日:</label></td>
+        <td class="w25">{{ $input->use_end_day }}</td>
     </tr>
     <tr class="midashi">
         <th colspan="4">配送先情報</th>
     </tr>
-    @if( $input->seminar_venue_pending == true )
+    @if( $input->event_venue_pending == true )
     <tr>
         <td class="w100 text-center"><label>後日入力</label></td>
     </tr>

@@ -28,35 +28,31 @@ class pctoolController extends Controller
         ];
 
         //使用日関連の変数を作る
-        $day1after = Common::dayafter(today(),1);
         $day4after = Common::dayafter(today(),4);
-        $daysemi3before = Common::daybefore(Carbon::parse($request->seminar_day),3);
-        $daysemi3after = Common::dayafter(Carbon::parse($request->seminar_day),3);
+        $day_after_from = Common::dayafter(Carbon::parse($request->from),1);
         // dd($request,$day1after,$daysemi3after);
         $validator = Validator::make($request->all(),
         [
-            'seminar_day' => ['date','required_with_all:from,to', "after_or_equal:{$day4after}"],
-            'from' => ['required_with_all:seminar_day,to', "after_or_equal:{$day1after}", "before_or_equal:{$daysemi3before}"],
-            'to' => ['required_with_all:seminar_day,from', "after_or_equal:{$daysemi3after}"],
+            'from' => ['required_with_all:to', "after_or_equal:{$day4after}"],
+            'to' => ['required_with_all:from', "after:from"],
         ],
         [
-            'seminar_day.required_with_all' => 'セミナー開催日は入力必須です。',
-            'from.required_with_all' => '予約開始日は入力必須です。',
-            'to.required_with_all' => '予約終了日は入力必須（セミナー開催日の3営業日後（'.$daysemi3after->format('Y/m/d').'）から入力可能）です。',
-            'seminar_day.after_or_equal' => 'セミナー開催日は本日の4営業日後（'.$day4after->format('Y/m/d').'）から入力可能です。',
-            'from.after_or_equal' => '予約開始日は翌営業日以降（'.$day1after->format('Y/m/d').'）から入力可能です。',
-            'from.before_or_equal' => '予約開始日はセミナー開催日の3営業日前（'.$daysemi3before->format('Y/m/d').'）まで入力可能です。',
-            'to.after_or_equal' => '予約終了日はセミナー開催日の3営業日後（'.$daysemi3after->format('Y/m/d').'）から入力可能です。',
+            'from.required_with_all' => '機材納品日は入力必須（'.$day4after->format('Y/m/d').'から入力可能）です。',
+            'to.required_with_all' => '現場最終日は入力必須です。',
+            'from.after_or_equal' => '機材納品日は'.$day4after->format('Y/m/d').'から入力可能です。',
+            'to.after' => '現場最終日は機材納品日の翌日以降（'.$day_after_from->format('Y/m/d').'）から入力可能です。',
         ]);
 
         if($validator->fails()){
             return back()->withErrors($validator)->withInput($request->except('to'));
         }
 
-        //使用状況の確認（From:予約開始日からTo:予約終了日の間にday_machineテーブルに存在するmachine_idをピックアップする）
+        //使用状況の確認（From:機材納品日からTo:現場最終日の間にday_machineテーブルに存在するmachine_idをピックアップする）
         if($request->from != "" && $request->to != ""){
-            $from = new Carbon($request->from);
-            $to = new Carbon($request->to);
+            $arrive = new Carbon($request->from);
+            $useend = new Carbon($request->to);
+            $from = Common::daybefore($arrive, 3);
+            $to = Common::dayafter($useend, 3);
             while($from <= $to){
                 $u[] = $from->format('Y-m-d');
                 $from->modify('1 day');
@@ -78,27 +74,26 @@ class pctoolController extends Controller
             'input' => $request,
             
         ];
-        if($request->session()->has('Session.SeminarDay')){
-            $merge['seminar_day'] = $request->session()->get('Session.SeminarDay');
-        }
         if($request->session()->has('Session.CartData')){
             $merge['id'] = $request->session()->get('Session.CartData');
         }
-        if($request->session()->has('Session.UseFrom')){
-            $merge['from'] = $request->session()->get('Session.UseFrom');
+        if($request->session()->has('Session.Arrive')){
+            $merge['from'] = $request->session()->get('Session.Arrive');
         }
-        if($request->session()->has('Session.UseTo')){
-            $merge['to'] = $request->session()->get('Session.UseTo');
+        if($request->session()->has('Session.UseEnd')){
+            $merge['to'] = $request->session()->get('Session.UseEnd');
         }
         
         if(isset($merge)){
             $request->merge($merge);
         }
 
-        //使用状況の確認（From:予約開始日からTo:予約終了日の間にday_machineテーブルに存在するmachine_idをピックアップする）
+        //使用状況の確認（From:機材納品日からTo:現場最終日の間にday_machineテーブルに存在するmachine_idをピックアップする）
         if($request->from != "" && $request->to != ""){
-            $from = new Carbon($request->from);
-            $to = new Carbon($request->to);
+            $arrive = new Carbon($request->from);
+            $useend = new Carbon($request->to);
+            $from = Common::daybefore($arrive, 3);
+            $to = Common::dayafter($useend, 3);
             while($from <= $to){
                 $u[] = $from->format('Y-m-d');
                 $from->modify('1 day');
@@ -123,7 +118,7 @@ class pctoolController extends Controller
             'orders' => Order::join('machine_detail_order','orders.order_id','=','machine_detail_order.order_id')
                 ->join('machine_details','machine_detail_order.machine_id','=','machine_details.machine_id')
                 ->where('machine_details.machine_id',$id)
-                ->orderBy('seminar_day', 'asc')
+                ->orderBy('order_use_from', 'asc')
                 ->get(),
             'maintenances' => Maintenance::where('machine_id',$id)->get()
         ];

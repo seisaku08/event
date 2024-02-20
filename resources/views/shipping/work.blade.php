@@ -11,15 +11,15 @@
         {{-- <?php dump($orders);?> --}}
     <div class="box1000">
         @if($route == 'shipping.invoice')
-        <p>以下のセミナーの発送処理を行います。</p>
-            @if($orders->seminar_venue_pending == 1)
+        <p>以下のイベントの発送処理を行います。</p>
+            @if($orders->event_venue_pending == 1)
             <p class='text-danger text-bold'>配送先住所が未記入です。<br>開催期日が差し迫っている場合は、ご担当者様に連絡してください。</p>
 
             @else
             <form action="{{ url('/invoicedl') }}" method="POST">
                 {{ Form::hidden('id', $orders->order_id) }}
                 @csrf
-                <p>セミナー情報を元に送り状データを生成します。<br>以下のボタンを押してファイルをダウンロードしてください。</p>
+                <p>イベント情報を元に送り状データを生成します。<br>以下のボタンを押してファイルをダウンロードしてください。</p>
                 <p><button class='btn btn-primary p-1'>送り状生成</button></p>
             </form>
         
@@ -30,12 +30,12 @@
             3. <input type="text" name="no[]" class="invoice">
             4. <input type="text" name="no[]" class="invoice">
             5. <input type="text" name="no[]" class="invoice"></p>
-        <p>「送信」ボタンを押すと、セミナー担当者に送り状を記載したメールが送られます。</p>
+        <p>「送信」ボタンを押すと、イベント担当者に送り状を記載したメールが送られます。</p>
             @endif
         @elseif($route == 'shipping.back')
         {{ Form::open(['route'=>[$route]]) }}
-        <p>以下のセミナーの返却処理を行います。</p>
-        <p>「送信」ボタンを押すと、セミナー予約の終了処理を行います。</p>
+        <p>以下のイベントの返却処理を行います。</p>
+        <p>「送信」ボタンを押すと、イベント予約の終了処理を行います。</p>
         @endif
 
         {{-- <p>また、発送を行った旨のメールがご担当者様に送られ<span class="text-danger text-bold">（未実装）</span>、送り状用B2・納品書excelファイルが生成されます<span class="text-danger text-bold">（未実装）</span>。</p> --}}
@@ -72,32 +72,28 @@
           <td class="w30">{{$orders->user_tel}}</td>
       </tr>
       <tr class="midashi">
-          <th colspan="4">セミナー情報</th>
+          <th colspan="4">イベント情報</th>
       </tr>
       <tr>
-        <td class="w30"><label>セミナー名</label></td>
-        <td class="w50">{{$orders->seminar_name}}</td>
+        <td class="w30"><label>イベント名</label></td>
+        <td class="w50">{{$orders->event_name}}</td>
     </tr>
     <tr>
         <td class="w30"><label>現在の状態</label></td>
         <td class="w25">{{ $orders->order_status }}</td>
     </tr>
     <tr>
-        <td class="w30"><label>セミナー開催日</label></td>
-        <td class="w25">{{ $orders->seminar_day }}</td>
-    </tr>
-    <tr>
-        <td class="w30"><label>予約開始日:</label></td>
+        <td class="w30"><label>機材納品日:</label></td>
         <td class="w25">{{ $orders->order_use_from }}</td>
     </tr>
     <tr>
-        <td class="w30"><label>予約終了日:</label></td>
+        <td class="w30"><label>現場最終日:</label></td>
         <td class="w25">{{ $orders->order_use_to }}</td>
     </tr>
   <tr class="midashi">
           <th colspan="4">配送先情報</th>
       </tr>
-      @if( $orders->seminar_venue_pending == true )
+      @if( $orders->event_venue_pending == true )
       <tr>
           <td class="w100 text-center"><label>後日入力</label></td>
       </tr>

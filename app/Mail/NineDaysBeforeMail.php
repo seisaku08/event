@@ -30,17 +30,17 @@ class NineDaysBeforeMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        if($this->orderdata['order']['seminar_venue_pending'] == 1){
+        if($this->orderdata['order']['event_venue_pending'] == 1){
             $pend = '【配送先住所未入力です！】';
         }else{
             $pend = '【機材管理システム】';           
         }
         return new Envelope(
             subject: "{$pend}リマインドメール（予約No. {$this->orderdata['order']['order_no']}）",
-            from: new Address('order@daioh-pc.com', '㈱大應 セミナー機材管理システム'),
-            cc: 'order@daioh-pc.com',
+            from: new Address('order@daioh-pcevent.com', '㈱大應 イベント機材管理システム'),
+            cc: 'order@daioh-pcevent.com',
             bcc: 'pc-kanri@dai-oh.co.jp',
-            replyTo: 'support@daioh-pc.com',
+            replyTo: 'support@daioh-pcevent.com',
 
         );
     }
