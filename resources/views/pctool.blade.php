@@ -82,7 +82,7 @@
         <th>toWin11</th>
         <th>備考</th>
       </tr>
-      <?php dump($prepare, $usage);?>
+      {{-- <?php dump($prepare, $usage);?> --}}
       @foreach($records as $record)
         <tr class="@php 
         if(in_array($record->machine_id, $usage) && in_array($record->machine_id, $prepare)){
