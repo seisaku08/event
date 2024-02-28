@@ -44,6 +44,7 @@ tr.gray{
 }
 tr.hide{
     display: table-row;
+    background-color: #bbffff!important;
     text-decoration: none;
 }
 
