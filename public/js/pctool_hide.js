@@ -14,6 +14,20 @@ function $n(name) {return document.getElementsByName(name)}
             $c($class)[i].disabled = false;
         }
     }
+
+    function hide_on($class){
+        for (var i=0; i< $c($class).length; i++){
+            $c($class)[i].classList.add('hide');
+            $c($class)[i].checked = false;
+        }
+    }
+    function hide_off($class){
+        for (var i=0; i< $c($class).length; i++){
+            $c($class)[i].classList.remove('hide');
+        }
+    }
+
+    //予約中の機材を表示するボタン
     window.addEventListener('DOMContentLoaded',function(){
         const show_used = document.getElementById('show_used'); // ①
         show_used.addEventListener('change',checksw,false);
@@ -24,6 +38,22 @@ function $n(name) {return document.getElementsByName(name)}
             }else{
                 gray_off('chused');
                 gray_off('trused');
+
+            }
+        }
+    });
+
+    //準備中の機材を表示するボタン
+    window.addEventListener('DOMContentLoaded',function(){
+        const show_used = document.getElementById('show_prepare'); // ①
+        show_used.addEventListener('change',checksw,false);
+        function checksw(){
+            if( this.checked ){
+                hide_on('chprepared');
+                hide_on('trprepared');
+            }else{
+                hide_off('chprepared');
+                hide_off('trprepared');
 
             }
         }

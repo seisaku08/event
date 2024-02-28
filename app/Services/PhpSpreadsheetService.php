@@ -97,20 +97,25 @@ class PhpSpreadsheetService
                 if($usage->user_id == 2){
                     $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
                     getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00ff0000');
+                //準備期間の場合、セルを水色に塗りつぶす
+                }elseif($day->copy() < Carbon::parse($usage->pend_arrive_day) || $day->copy() > Carbon::parse($usage->use_end_day)){
+                    $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
+                    getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00ccddff');
                 //住所登録がまだの場合、セルを黄色に塗りつぶす
                 }elseif($usage->event_venue_pending == true){
                     $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
                     getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00ffff00');
-                //完了した予約の場合、セルをグレーに塗りつぶす
-                }elseif($usage->order_status == '返却完了'){
-                    $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
-                    getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00dddddd');
                 //不備のない予約の場合、セルを緑に塗りつぶす
                 }else{
                     $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
                     getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('0060ff70');
-            }
+                }
 
+                //完了した予約の場合、セルをグレーに塗りつぶす
+                if($usage->order_status == '返却完了'){
+                    $sheet->getActiveSheet()->getStyle([$key+2,$i+2])->
+                    getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00dddddd');
+                }
             }
             }
             //デバッグ用

@@ -28,7 +28,7 @@ class ConfirmController extends Controller
                 'venue_name' => 'exclude_if:event_venue_pending,true|required',
                 'venue_tel' => 'exclude_if:event_venue_pending,true|required|digits_between:5,11',
                 'shipping_arrive_day' => "exclude_if:event_venue_pending,true|required|after_or_equal:{$request->pend_arrive_day}",
-                'shipping_return_day' => 'exclude_if:event_venue_pending,true|required|after_or_equal:order_use_to',
+                'shipping_return_day' => "exclude_if:event_venue_pending,true|required|after_or_equal:{$request->use_end_day}",
                 'shipping_note' => 'max:200',
             ];
 
@@ -42,7 +42,7 @@ class ConfirmController extends Controller
                 'shipping_arrive_day.required' => '到着希望日は必ず入力してください。',
                 'shipping_arrive_day.after_or_equal' => "到着希望日は事前に設定した機材納品日（{$request->pend_arrive_day}）以降の日付（当日含む）を入力してください。",
                 'shipping_return_day.required' => '返送機材発送予定日は必ず入力してください。',
-                'shipping_return_day.after_or_equal' => '返送機材発送予定日は現場最終日以降の日付（当日含む）を入力してください。',
+                'shipping_return_day.after_or_equal' => "返送機材発送予定日は現場最終日（{$request->use_end_day}）以降の日付（当日含む）を入力してください。",
                 'shipping_note.max' => '備考は200文字以下で入力してください。',
 
                

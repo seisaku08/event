@@ -40,6 +40,14 @@
             </td>
         </tr>
         <tr>
+            <th style="background-color: #ccddff;">
+                水色のセル
+            </th>
+            <td>
+                予約が入っていますが、発送（返却）準備中の期間で、直接受け渡す場合に限り予約が可能です。<br>
+            </td>
+        </tr>
+        <tr>
             <th style="background-color: #dddddd;">
                 灰色のセル
             </th>

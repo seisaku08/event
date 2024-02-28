@@ -84,13 +84,15 @@ class OrderController extends Controller
 
         //使用状況の確認（From:機材納品日からTo:現場最終日の間にday_machineテーブルに存在するmachine_idをピックアップする）
         // if($request->from != "" && $request->to != ""){
+            $arrive = new Carbon($order->pend_arrive_day);
+            $useend = new Carbon($order->use_end_day);
             $from = new Carbon($order->order_use_from);
             $to = new Carbon($order->order_use_to);
             while($from <= $to){
                 $u[] = $from->format('Y-m-d');
                 $from->modify('1 day');
             }
-        // dd($from, $to, $u);
+            // dd($from, $to, $u, $p);
             $dm = array_keys(array_count_values(DayMachine::whereIn('day', $u)->pluck('machine_id')->toarray()));
             $tm = array_keys(array_count_values(Temporary::whereIn('day', $u)->where('user_id', '<>', Auth::user()->id)->pluck('machine_id')->toarray()));
             $data['usage'] = array_merge($dm, $tm);

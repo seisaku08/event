@@ -32,7 +32,7 @@ div .box1000{
     margin: auto;
 }
 
-tr.trused{
+tr.trused, tr.trprepared{
     display: none;
     vertical-align: inherit;
 }
@@ -41,8 +41,13 @@ tr.gray{
     color: gray;
     background-color: #cccccc!important;
     text-decoration: none;
-
 }
+tr.hide{
+    display: table-row;
+    text-decoration: none;
+}
+
+
 p .center{
     text-align: center;
 }

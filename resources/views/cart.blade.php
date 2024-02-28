@@ -14,7 +14,7 @@
                 <th scope="col" colspan="4">選択機材情報</th>
             </thead> --}}
             <tr>
-                <td class="text-center" colspan="4"><label>予約期間:</label>{{ $from }}～{{ $to }}<br>
+                <td class="text-center" colspan="4"><label>予約期間（自動計算）:</label>{{ $from }}～{{ $to }}<br>
                     <label>機材納品日:</label>{{ $arrive }} 　<label>現場最終日:</label>{{ $useend }}</td>
             </tr>
             <tr>

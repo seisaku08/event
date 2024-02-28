@@ -51,17 +51,24 @@ class pctoolController extends Controller
         if($request->from != "" && $request->to != ""){
             $arrive = new Carbon($request->from);
             $useend = new Carbon($request->to);
-            $from = Common::daybefore($arrive, 3);
-            $to = Common::dayafter($useend, 3);
+            $from = Common::daybefore($arrive->copy(), 3);
+            $to = Common::dayafter($useend->copy(), 3);
             while($from <= $to){
-                $u[] = $from->format('Y-m-d');
+                if($from < $arrive || $from > $useend){
+                    $p[] = $from->format('Y-m-d');
+                }else{
+                    $u[] = $from->format('Y-m-d');
+                }
                 $from->modify('1 day');
             }
             $dm = array_keys(array_count_values(DayMachine::whereIn('day', $u)->pluck('machine_id')->toarray()));
-            $tm = array_keys(array_count_values(Temporary::whereIn('day', $u)->where('user_id', '<>', Auth::user())->pluck('machine_id')->toarray()));
+            $tm = array_keys(array_count_values(Temporary::whereIn('day', $u)->where('user_id', '<>', Auth::user()->id)->pluck('machine_id')->toarray()));
+            $pr = array_keys(array_count_values(DayMachine::whereIn('day', $p)->pluck('machine_id')->toarray()));
             $data['usage'] = array_merge($dm, $tm);
+            $data['prepare'] = $pr;
         }else{
             $data['usage'] = [];
+            $data['prepare'] = [];
         }
         
         // dd($dm,$tm,$data['usage']);
@@ -92,17 +99,22 @@ class pctoolController extends Controller
         if($request->from != "" && $request->to != ""){
             $arrive = new Carbon($request->from);
             $useend = new Carbon($request->to);
-            $from = Common::daybefore($arrive, 3);
-            $to = Common::dayafter($useend, 3);
+            $from = Common::daybefore($arrive->copy(), 3);
+            $to = Common::dayafter($useend->copy(), 3);
             while($from <= $to){
+                if($from < $arrive || $from > $useend){
+                    $p[] = $from->format('Y-m-d');
+                }
                 $u[] = $from->format('Y-m-d');
                 $from->modify('1 day');
             }
             $dm = array_keys(array_count_values(DayMachine::whereIn('day', $u)->pluck('machine_id')->toarray()));
             $tm = array_keys(array_count_values(Temporary::whereIn('day', $u)->where('user_id', '<>', Auth::user()->id)->pluck('machine_id')->toarray()));
             $data['usage'] = array_merge($dm, $tm);
+            $data['prepare'] = $p;
         }else{
             $data['usage'] = [];
+            $data['prepare'] = [];
         }
         
         // dd($dm,$tm,$data['usage']);

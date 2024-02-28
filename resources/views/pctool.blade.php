@@ -32,9 +32,12 @@
           </div>
         </div>
       </div>
-      <div class="column text-center align-middle p-1">
+      <div class="column text-lest align-left p-1">
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="show_used" ><label class="custom-control-label" for="show_used">予約中の機材も表示する</label>
+          <input type="checkbox" class="custom-control-input" id="show_used" ><label class="custom-control-label" for="show_used">予約中の機材も表示する</label><br>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="show_prepare" ><label class="custom-control-label" for="show_prepare">配送（返却）準備中の機材も表示する</label>
         </div>
       </div>
     </div>
@@ -79,10 +82,27 @@
         <th>toWin11</th>
         <th>備考</th>
       </tr>
+      <?php dump($prepare, $usage);?>
       @foreach($records as $record)
-        <tr class="{{ in_array($record->machine_id, $usage)? 'trused' : '' }} ">
+        <tr class="@php 
+        if(in_array($record->machine_id, $usage) && in_array($record->machine_id, $prepare)){
+          echo('trused');
+        }elseif(in_array($record->machine_id, $prepare) && !in_array($record->machine_id, $usage)){
+          echo('trprepared');
+        }elseif(!in_array($record->machine_id, $prepare) && in_array($record->machine_id, $usage)){
+          echo('trused');
+        }
+        @endphp">
           <td class="text-center"><input type="checkbox" name="id[]" value="{{$record->machine_id}}"
-            class="{{ in_array($record->machine_id, $usage)? 'chused' : '' }}"
+            class="@php 
+            if(in_array($record->machine_id, $usage) && in_array($record->machine_id, $prepare)){
+              echo('chused');
+            }elseif(in_array($record->machine_id, $prepare) && !in_array($record->machine_id, $usage)){
+              echo('chprepared');
+            }elseif(!in_array($record->machine_id, $prepare) && in_array($record->machine_id, $usage)){
+              echo('chused');
+            }
+            @endphp"
             @if ($input->id <> null)
               {{ in_array($record->machine_id, $input->id)? ' checked' : '' }}
             @endif></td>
