@@ -73,17 +73,21 @@ class PhpSpreadsheetService
 
             //使用中の機材を検索、イベント名を取得
             foreach ($machines as $key => $machine) {
-            $usage = DayMachine::join('machine_detail_order', 'day_machine_detail.machine_id', '=', 'machine_detail_order.machine_id')
+            // $usage
+            $use = DayMachine::join('machine_detail_order', 'day_machine_detail.machine_id', '=', 'machine_detail_order.machine_id')
             ->join('orders', 'machine_detail_order.order_id', '=', 'orders.order_id')
             ->join('users', 'orders.user_id', '=', 'users.id')
             ->where('day', $day)->where('machine_detail_order.machine_id', $machine->machine_id)
             ->where('orders.order_use_from', '<=', $day )
             ->where('orders.order_use_to', '>=', $day )
-            ->first();
+            ->get(); //2024/2/28 複数hitに対応するためgetを試してみる
+            // ->first();
 
             // dd($usage);
 
             //使用中のイベントがある場合書き込む
+            //2024/2/28 複数hitに対応するためgetを試してみる
+            foreach($use as $usage){
             if(!empty($usage->event_name)){
                 $uday = Carbon::parse($usage->shipping_arrive_day)->format('md');
                 if($usage->user_id == 2){
@@ -117,6 +121,7 @@ class PhpSpreadsheetService
                     getFill() -> setFillType(Fill::FILL_SOLID) -> getStartColor() -> setARGB('00dddddd');
                 }
             }
+        }
             }
             //デバッグ用
             // $sheet->getActiveSheet()

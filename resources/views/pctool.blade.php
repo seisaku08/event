@@ -64,7 +64,7 @@
     {{ Form::hidden('from', $input->from)}}
     {{ Form::hidden('to', $input->to)}}
     <table class="table table-striped table-sm" id="pctool">
-    <tr class="trprepared"><td></td><td colspan="14"><b>配送（返送）準備中の機材は水色のセルで表示されます。</b></td></tr>
+    <tr class="trprepared"><td colspan="15"><b>※配送（返送）準備中の機材は水色のセルで表示されます。</b></td></tr>
       <tr class="midashi">
         <th>　</th>
         <th>ID</th>
