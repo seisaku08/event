@@ -12,7 +12,7 @@
     <p class="text-left">お世話になっております。<br>
         株式会社大應【機材管理システム】からご連絡いたします。</p>
     <p class="text-left">
-        予約No. {{ $orderdata['order']['order_no'] }}として承りましたイベントが、{{ Common::businessdaycheck($orderdata['order']['shipping_arrive_day']) }}の開催となりました。<br>
+        予約No. {{ $orderdata['order']['order_no'] }}として承りましたイベントが、{{ Common::businessdaycheck($orderdata['order']['pend_arrive_day']) }}の開催となりました。<br>
         ご予約に変更はございませんでしょうか。万一内容の変更や取消などがございましたら、以下よりお手続きをお願いいたします。</p>
     {{-- 送り先未入力の場合、解消されるまで送られ続けることへの注意書 --}}
     @if( $orderdata['order']['event_venue_pending'] == true )
@@ -22,7 +22,7 @@
     {{-- https://daioh-pc.com/order/detail/{{$orderdata['order']['order_id']}} --}}
         <a href="{{route("order.detail",$orderdata['order']['order_id'])}}">変更はこちら（webブラウザが開きます）</a><br>
         <h5 class="mt-3 mb-2">【予約の変更・取消について】</h5>
-<p class="text-left">システムを利用しての予約変更・取消は、機材納品日の3営業日前（本予約の場合、{{ Common::daybefore(Carbon::parse($orderdata['order']->shipping_arrive_day),3)->format('Y年n月j日') }}）まで受付可能です。<br>
+<p class="text-left">システムを利用しての予約変更・取消は、機材納品日の3営業日前（本予約の場合、{{ Common::daybefore(Carbon::parse($orderdata['order']->pend_arrive_day),3)->format('Y年n月j日') }}）まで受付可能です。<br>
     システムによる受付締切後のご相談や、ご不明な点がございましたら、下記お問い合わせ先までご連絡くださいますようお願いいたします。</p>
     
 <table id="form">
