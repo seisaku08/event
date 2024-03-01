@@ -49,7 +49,7 @@ class FinishController extends Controller
             }
 
             //機材納品日から連番を取得
-            $sday = new Carbon($request->from);
+            $sday = new Carbon($request->pend_arrive_day);
             $sno = Sequence::getNewOrderNo($sday->format('ymd'));
             $order_no = sprintf('%s%04d', $sday->format('ymd'), $sno);
 
@@ -71,7 +71,7 @@ class FinishController extends Controller
                     $order->event_venue_pending = 0;
                 }
                 $order->reminder_sent = 0;
-                $order->nine_day_before = Common::daybefore(Carbon::parse($order->from), 9);
+                $order->nine_day_before = Common::daybefore(Carbon::parse($request->pend_arrive_day), 9);
                 $order->save();
 
             //order_idをmachine_detail_orderテーブルのために取得
